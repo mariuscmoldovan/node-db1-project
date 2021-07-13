@@ -1,16 +1,17 @@
 const router = require('express').Router()
 
+const md = require('./accounts-middleware')
+
 router.get('/', (req, res, next) => {
   // DO YOUR MAGIC
   try {
-    
-
+    res.json('get accounts')
   } catch (err) {
     next({status: 422, message: 'horrible error'})
   }
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', md.checkAccountId, (req, res, next) => {
   // DO YOUR MAGIC
   try {
 
@@ -19,25 +20,34 @@ router.get('/:id', (req, res, next) => {
   }
 })
 
-router.post('/', (req, res, next) => {
+router.post(
+  '/',
+   md.checkAccountPayload,
+   md.checkAccountNameUnique,
+   (req, res, next) => {
   // DO YOUR MAGIC
-  try {
+      try {
 
-  } catch (err) {
-    next(err)
-  }
+      } catch (err) {
+        next(err)
+      }
 })
 
-router.put('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
-  try {
+router.put(
+  '/:id', 
+  md.checkAccountId,
+  md.checkAccountPayload,
+  md.checkAccountNameUnique,
+  (req, res, next) => {
+    // DO YOUR MAGIC
+    try {
 
-  } catch (err) {
-    next(err)
-  }
+    } catch (err) {
+      next(err)
+    }
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', md.checkAccountId, (req, res, next) => {
   // DO YOUR MAGIC
   try {
 
